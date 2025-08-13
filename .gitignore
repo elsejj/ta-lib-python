@@ -9,3 +9,5 @@ dist/
 *~
 *.egg-info/
 
+ta-lib-*
+talib-*.zip
