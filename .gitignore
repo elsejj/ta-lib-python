@@ -11,3 +11,4 @@ dist/
 
 ta-lib-*
 talib-*.zip
+!.cnb.yml

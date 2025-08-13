@@ -1,0 +1,15 @@
+main:
+  push:
+    - docker:
+        image: docker.cnb.cool/elsejj/ci/py312-rust:latest
+      stages:
+        - name: build
+          script:
+            - bash tools/build_talib_linux.sh
+            - make build
+        - name: push pypi
+          script:
+            - export TWINE_USERNAME="cnb"
+            - export TWINE_PASSWORD=$CNB_TOKEN
+            - export TWINE_REPOSITORY_URL="https://pypi.cnb.cool/elsejj/ta-lib/-/packages/simple"
+            - twine upload dist/*
