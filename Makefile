@@ -31,3 +31,6 @@ test: build
 
 sdist:
 	python3 -m build --sdist
+
+static_build:
+	TA_INCLUDE_PATH=./ta-lib-install/include TA_LIBRARY_PATH=./ta-lib-install/lib TA_LINK_STATIC=1 python3 setup.py bdist_wheel

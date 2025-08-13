@@ -1,0 +1,2 @@
+387a388
+> 	set_target_properties(ta-lib-static PROPERTIES COMPILE_OPTIONS "-fPIC")

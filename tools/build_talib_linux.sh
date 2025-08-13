@@ -6,10 +6,12 @@ CMAKE_BUILD_TYPE=Release
 CMAKE_CONFIGURATION_TYPES=Release
 
 # Download TA-Lib C Library
-curl -L -o talib-${TALIB_C_VER}.zip https://github.com/TA-Lib/ta-lib/archive/refs/tags/v${TALIB_C_VER}.zip
-if [ $? -ne 0 ]; then
-    echo "Failed to download TA-Lib C library"
-    exit 1
+if [ ! -f talib-${TALIB_C_VER}.zip ]; then
+    curl -L -o talib-${TALIB_C_VER}.zip https://github.com/TA-Lib/ta-lib/archive/refs/tags/v${TALIB_C_VER}.zip
+    if [ $? -ne 0 ]; then
+        echo "Failed to download TA-Lib C library"
+        exit 1
+    fi
 fi
 
 # Unzip TA-Lib C
@@ -26,9 +28,13 @@ cd ta-lib-${TALIB_C_VER}
 mkdir -p include/ta-lib/
 cp include/*.h include/ta-lib/
 
+# Add fPIC flag for static library
+patch CMakeLists.txt ../tools/CMakeLists.txt.fPIC.patch
+
 # Create build directory
 mkdir -p _build
 cd _build
+
 
 # Use CMake to configure the build
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=../../ta-lib-install ..
@@ -38,7 +44,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Compile TA-Lib
-make
+make -j 
 if [ $? -ne 0 ]; then
     echo "Build failed"
     exit 1
